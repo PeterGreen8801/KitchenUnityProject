@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
             //Cannot move towards move direction
 
             //Attempt only X movement
-            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0);
+            Vector3 moveDirectionX = new Vector3(moveDirection.x, 0, 0).normalized;
             canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionX, moveDistance);
 
             if (canMove)
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
                 //Cannot move only on the x
 
                 //Attempt only Z movement
-                Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z);
+                Vector3 moveDirectionZ = new Vector3(0, 0, moveDirection.z).normalized;
                 canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirectionZ, moveDistance);
 
                 if (canMove)
