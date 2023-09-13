@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 lastInteractDirection;
 
     [SerializeField] private GameInput gameInput;
+    [SerializeField] private LayerMask countersLayerMask;
 
 
     private void Update()
@@ -32,15 +33,14 @@ public class PlayerController : MonoBehaviour
 
         float interactDistance = 2f;
 
-        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactDistance))
+        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactDistance, countersLayerMask))
         {
-            Debug.Log(raycastHit.transform);
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                //Has ClearCounter
+                clearCounter.Interact();
+            }
         }
-        else
-        {
-            Debug.Log("-");
-        }
-
     }
     private void HandleMovement()
     {

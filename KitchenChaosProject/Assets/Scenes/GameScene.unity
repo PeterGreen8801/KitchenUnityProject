@@ -586,6 +586,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   gameInput: {fileID: 2066077746}
+  countersLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &1358851362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -842,6 +845,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ClearCounter
+      objectReference: {fileID: 0}
+    - target: {fileID: 2978563169170148964, guid: 326692fffab0e2342aff25c0fe8db2e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5962324265162026046, guid: 326692fffab0e2342aff25c0fe8db2e9,
         type: 3}
