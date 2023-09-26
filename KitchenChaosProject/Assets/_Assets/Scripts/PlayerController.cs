@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -5,6 +6,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    public static PlayerController Instance { get; private set; }
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
 
     [SerializeField] private float moveSpeed = 7f;
 
@@ -15,6 +24,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
 
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.Log("There is more than one Player instance");
+        }
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -56,18 +73,18 @@ public class PlayerController : MonoBehaviour
 
                 if (clearCounter != selectedCounter)
                 {
-                    selectedCounter = clearCounter;
+                    SetSelectedCounter(clearCounter);
                 }
             }
             else
             {
-                selectedCounter = null;
+                SetSelectedCounter(null);
             }
 
         }
         else
         {
-            selectedCounter = null;
+            SetSelectedCounter(null);
         }
         Debug.Log(selectedCounter);
     }
@@ -125,6 +142,16 @@ public class PlayerController : MonoBehaviour
         float rotateSpeed = 10f;
         transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
 
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 
     public bool IsWalking()
