@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isWalking;
     private Vector3 lastInteractDirection;
+    private ClearCounter selectedCounter;
 
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
@@ -22,25 +23,9 @@ public class PlayerController : MonoBehaviour
 
     private void GameInput_OnInteractAction(object sender, System.EventArgs e)
     {
-        //throw new System.NotImplementedException();
-
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-        Vector3 moveDirection = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        if (moveDirection != Vector3.zero)
+        if (selectedCounter != null)
         {
-            lastInteractDirection = moveDirection;
-        }
-
-        float interactDistance = 2f;
-
-        if (Physics.Raycast(transform.position, lastInteractDirection, out RaycastHit raycastHit, interactDistance, countersLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                //Has ClearCounter
-                clearCounter.Interact();
-            }
+            selectedCounter.Interact();
         }
     }
 
@@ -68,8 +53,23 @@ public class PlayerController : MonoBehaviour
             {
                 //Has ClearCounter
                 //clearCounter.Interact();
+
+                if (clearCounter != selectedCounter)
+                {
+                    selectedCounter = clearCounter;
+                }
             }
+            else
+            {
+                selectedCounter = null;
+            }
+
         }
+        else
+        {
+            selectedCounter = null;
+        }
+        Debug.Log(selectedCounter);
     }
     private void HandleMovement()
     {
